@@ -38,16 +38,36 @@ class DiceCup:
         return self._locked[index]
 
     def release_all(self):
-        self._locked[False] * 5
+        self._locked = [False] * 5
 
 
-class ShipOfFools:
+class ShipOfFoolsGame:
     def __init__(self):
         self._cup = DiceCup()
         self.wining_score = 0
 
-    def turn():
-        pass
+    def turn(self):
+        six = False
+        five = False
+        four = False
+        count = 0
+        self._cup.release_all()
+        for _ in range(3):
+            for i in range(5):
+                self._cup.roll()
+                if not six and self._cup.die_value(i) == 6:
+                    self._cup.bank(i)
+                    six = True
+                if six and not five and self._cup.die_value(i) == 5:
+                    self._cup.bank(i)
+                    five = True
+                if six and five and not four and self._cup.die_value(i) == 4:
+                    self._cup.bank(i)
+                if six and five and four:
+                    for j in range(5):
+                        if not self._cup.is_banked(j):
+                            count += self._cup.die_value(j)
+        return count
 
 
 class Player:
@@ -70,7 +90,7 @@ class Player:
 
 class PlayRoom:
     def __init__(self):
-        self._game = ShipOfFools()
+        self._game = ShipOfFoolsGame()
         self._players = [Player()]
         self._winner = None
     
@@ -94,3 +114,6 @@ class PlayRoom:
 
     def print_winner():
         pass
+
+
+print(DiceCup())
