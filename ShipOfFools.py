@@ -54,8 +54,9 @@ class ShipOfFoolsGame:
         six2 = False
         six3 = False
         count = 0
+        six_count = 0
         self._cup.release_all()
-        for _ in range(3):
+        for round_number in range(3):
             for i in range(5):
                 self._cup.roll()
                 if not six and value(i) == 6:
@@ -72,12 +73,16 @@ class ShipOfFoolsGame:
                         if not self._cup.is_banked(j):
                             if not six2 and value(j) == 6:
                                 count += value(j)
+                                six_count += 1
                                 self._cup.bank(j)
                                 six2 = True
                             elif six2 and not six3 and value(j) == 6:
                                 count += value(j)
+                                six_count += 1
                                 self._cup.bank(j)
                                 six3 = True
+                            elif round_number == 1 and six_count < 2:
+                                self._cup.release(j)
                             else:
                                 count += value(j)
                     return count
@@ -148,6 +153,8 @@ if __name__ == "__main__":
     room.set_game(ShipOfFoolsGame())
     room.add_player(Player('Noora'))
     room.add_player(Player('Ali'))
+    room.add_player(Player('Sidra'))
+    room.add_player(Player('Rasmus'))
     room.reset_scores()
     while not room.game_finished():
         room.play_round()
