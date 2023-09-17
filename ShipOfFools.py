@@ -44,34 +44,48 @@ class DiceCup:
 class ShipOfFoolsGame:
     def __init__(self):
         self._cup = DiceCup()
-        self.wining_score = 0
+        self.wining_score = 50
 
     def turn(self):
+        value = self._cup.die_value
         six = False
         five = False
         four = False
+        six2 = False
+        six3 = False
         count = 0
         self._cup.release_all()
         for _ in range(3):
             for i in range(5):
                 self._cup.roll()
-                if not six and self._cup.die_value(i) == 6:
+                if not six and value(i) == 6:
                     self._cup.bank(i)
                     six = True
-                if six and not five and self._cup.die_value(i) == 5:
+                if six and not five and value(i) == 5:
                     self._cup.bank(i)
                     five = True
-                if six and five and not four and self._cup.die_value(i) == 4:
+                if six and five and not four and value(i) == 4:
                     self._cup.bank(i)
+                    four = True
                 if six and five and four:
                     for j in range(5):
                         if not self._cup.is_banked(j):
-                            count += self._cup.die_value(j)
+                            if not six2 and value(j) == 6:
+                                count += value(j)
+                                self._cup.bank(j)
+                                six2 = True
+                            elif six2 and not six3 and value(j) == 6:
+                                count += value(j)
+                                self._cup.bank(j)
+                                six3 = True
+                            else:
+                                count += value(j)
+                    return count
         return count
 
 
 class Player:
-    def __init__(self, name='Bot', score=0):
+    def __init__(self, name, score):
         self._name = name
         self._score = score
 
@@ -84,21 +98,22 @@ class Player:
     def reset_score(self):
         self._score = 0
 
-    def play_turn(self, ShipOfFools):
-        pass
+    def play_turn(self, ShipOfFoolsGame):
+        score = ShipOfFoolsGame.turn()
+        self._score += score
 
 
 class PlayRoom:
     def __init__(self):
         self._game = ShipOfFoolsGame()
-        self._players = [Player()]
+        self._players = Player()
         self._winner = None
     
     def set_game(self, game):
-        pass
+        self._game = game
 
     def add_player(self, player):
-        pass
+        self._players.append(player)
 
     def reset_scores(self):
         pass
@@ -116,4 +131,6 @@ class PlayRoom:
         pass
 
 
-print(DiceCup())
+game = ShipOfFoolsGame()
+score = game.turn()
+print(score)
