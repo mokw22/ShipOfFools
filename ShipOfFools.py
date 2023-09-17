@@ -85,9 +85,9 @@ class ShipOfFoolsGame:
 
 
 class Player:
-    def __init__(self, name, score):
+    def __init__(self, name):
         self._name = name
-        self._score = score
+        self._score = 0
 
     def current_score(self):
         return self._score
@@ -98,8 +98,8 @@ class Player:
     def reset_score(self):
         self._score = 0
 
-    def play_turn(self, ShipOfFoolsGame):
-        score = ShipOfFoolsGame.turn()
+    def play_turn(self, game):
+        score = game.turn()
         self._score += score
 
 
