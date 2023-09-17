@@ -106,9 +106,9 @@ class Player:
 class PlayRoom:
     def __init__(self):
         self._game = ShipOfFoolsGame()
-        self._players = Player()
+        self._players = []
         self._winner = None
-    
+
     def set_game(self, game):
         self._game = game
 
@@ -116,19 +116,30 @@ class PlayRoom:
         self._players.append(player)
 
     def reset_scores(self):
-        pass
+        for player in self._players:
+            player.reset_score()
+
+    def game_finished(self):
+        game_finished = True
+        for player in self._players:
+            if self.current_score() >= self._game.wining_score:
+                self._winner = player
+                return game_finished
+        return False
 
     def play_round(self):
-        pass
+        for player in self._players:
+            player.play_turn(game)
+        self.game_finished()
 
-    def game_finished():
-        pass
+    def print_scores(self):
+        for player in self._players:
+            print(player.get_name()+':'+str(player.current_score()+'points!'))
+            print()
 
-    def print_scores():
-        pass
-
-    def print_winner():
-        pass
+    def print_winner(self):
+        if self._winner:
+            print('The winner is '+self._winner.get_name()+('!'))
 
 
 game = ShipOfFoolsGame()
