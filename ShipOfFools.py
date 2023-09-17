@@ -122,26 +122,34 @@ class PlayRoom:
     def game_finished(self):
         game_finished = True
         for player in self._players:
-            if self.current_score() >= self._game.wining_score:
+            if player.current_score() >= self._game.wining_score:
                 self._winner = player
                 return game_finished
         return False
 
     def play_round(self):
         for player in self._players:
-            player.play_turn(game)
+            player.play_turn(ShipOfFoolsGame())
         self.game_finished()
 
     def print_scores(self):
         for player in self._players:
-            print(player.get_name()+':'+str(player.current_score()+'points!'))
+            print(player.get_name() + ':', player.current_score(),
+                  'points!')
             print()
 
     def print_winner(self):
         if self._winner:
-            print('The winner is '+self._winner.get_name()+('!'))
+            print('The winner is ' + self._winner.get_name() + ('!'))
 
 
-game = ShipOfFoolsGame()
-score = game.turn()
-print(score)
+if __name__ == "__main__":
+    room = PlayRoom()
+    room.set_game(ShipOfFoolsGame())
+    room.add_player(Player('Noora'))
+    room.add_player(Player('Ali'))
+    room.reset_scores()
+    while not room.game_finished():
+        room.play_round()
+        room.print_scores()
+    room.print_winner()
