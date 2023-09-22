@@ -1,3 +1,7 @@
+"""Mohammed Kweder, 2023-22-09
+   DVAMI, H22 - Civilingenjör i AI och maskininlärning
+   DV1582, H23 - lp1 Programmering i Python, fortsättningskurs
+"""
 from random import randint
 
 
@@ -85,8 +89,8 @@ class ShipOfFoolsGame:
         six_count = 0
         self._cup.release_all()
         for round_number in range(3):
+            self._cup.roll()
             for i in range(5):
-                self._cup.roll()
                 if not six and value(i) == 6:
                     self._cup.bank(i)
                     six = True
@@ -111,6 +115,7 @@ class ShipOfFoolsGame:
                                 six3 = True
                             elif round_number == 1 and six_count < 2:
                                 self._cup.release(j)
+                                count += value(j)
                             else:
                                 count += value(j)
                     return count
